@@ -1,0 +1,11 @@
+{
+    "identifier": "com.m10z.srt-subtitles",
+    "name": "SRT Subtitles",
+    "organization": "Miklos Juhasz",
+    "description": "SRT Subtitles file syntax highlighting",
+    "version": "1.0",
+    "categories": ["languages"],
+    "repository": "https://github.com/mjuhasz/nova-srt",
+    "bugs": "https://github.com/mjuhasz/nova-srt/issues",
+    "license": "MIT"
+}

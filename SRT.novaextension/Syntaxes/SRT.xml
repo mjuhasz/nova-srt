@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<syntax name="srt">
+    <meta>
+        <name>SRT Subtitles</name>
+        <type>structured</type>
+        <preferred-file-extension>srt</preferred-file-extension>
+    </meta>
+    
+    <detectors>
+        <extension priority="1.0">srt</extension>
+    </detectors>
+        
+    <scopes>
+        <scope name="srt.subtitle.entry">
+            <starts-with>
+                <!-- numeric counter identifying each sequential subtitle -->
+                <expression>(^\d+$)</expression>
+                <capture number="1" name="srt.subtitle.sequence.value.number" />
+            </starts-with>
+            <ends-with>
+                <!-- blank line containing no text, indicating the end of this subtitle -->
+                <expression>^$</expression>
+            </ends-with>
+            <subscopes anchored="true">
+                <scope name="srt.subtitle.timing">
+                    <!-- time that the subtitle should appear on the screen, followed by a separator and the time it should disappear, with optional position data -->
+                    <expression>^(\d{2}:\d{2}:\d{2},\d{3})(\s--&gt;\s)(\d{2}:\d{2}:\d{2},\d{3})((?:\s[XY][12]:\d+)*)?$</expression>
+                    <capture number="1" name="srt.subtitle.start.processing.string" />
+                    <capture number="2" name="srt.subtitle.separator.operator" />
+                    <capture number="3" name="srt.subtitle.end.processing.string" />
+                    <capture number="4" name="srt.subtitle.position.string" />
+                </scope>  
+                <!-- subtitle text itself on one or more lines -->
+                <scope name="srt.subtitle.text.value" spell-check="true">
+                    <starts-with>
+                        <expression>^</expression>
+                    </starts-with>
+                    <subscopes>
+                        <!-- opening or closing bold, italic, or underline tag -->
+                        <scope name="srt.formatting.value.entity">
+                            <expression>\&lt;/?[biu]\&gt;</expression>
+                        </scope>
+                        <!-- opening or closing bold, italic, or underline tag -->
+                        <scope name="srt.position.value.entity">
+                            <expression>\{\\an[1-9]{1}\}</expression>
+                        </scope>
+                        <!-- opening or closing font tag with attributes-->
+                        <scope name="srt.font.color.value.entity">
+                            <expression>\&lt;/?font[^\&gt;]*\&gt;</expression>
+                        </scope>
+
+                    </subscopes>
+                    <ends-with>
+                        <expression>^$</expression>
+                    </ends-with>
+                </scope>
+            </subscopes>
+        </scope>
+    </scopes>
+    
+</syntax>
