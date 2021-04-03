@@ -31,32 +31,92 @@
                     <capture number="3" name="srt.subtitle.end.processing.string" />
                     <capture number="4" name="srt.subtitle.position.string" />
                 </scope>  
-                <!-- subtitle text itself on one or more lines -->
+                
+                <!-- subtitle text on one or more lines -->
                 <scope name="srt.subtitle.text.value" spell-check="true">
                     <starts-with>
                         <expression>^</expression>
                     </starts-with>
-                    <subscopes>
-                        <!-- opening or closing bold, italic, or underline tag -->
-                        <scope name="srt.formatting.value.entity">
-                            <expression>\&lt;/?[biu]\&gt;</expression>
-                        </scope>
-                        <!-- opening or closing bold, italic, or underline tag -->
-                        <scope name="srt.position.value.entity">
-                            <expression>\{\\an[1-9]{1}\}</expression>
-                        </scope>
-                        <!-- opening or closing font tag with attributes-->
-                        <scope name="srt.font.color.value.entity">
-                            <expression>\&lt;/?font[^\&gt;]*\&gt;</expression>
-                        </scope>
-
-                    </subscopes>
                     <ends-with>
                         <expression>^$</expression>
                     </ends-with>
+                    
+                    <subscopes>
+                        <!-- italic text -->
+                        <scope name="srt.italic">
+                            <starts-with>
+                                <expression>\&lt;i\&gt;</expression>
+                                <capture number="0" name="srt.italic.opening.tag" />
+                            </starts-with>
+                            <ends-with>
+                                <expression>\&lt;/i\&gt;</expression>
+                                <capture number="0" name="srt.italic.closing.tag" />
+                            </ends-with>
+                            <subscopes>
+                                <scope name="srt.text.markup.italic">
+                                    <expression>.</expression>
+                                </scope>
+                            </subscopes>
+                        </scope>
+                        
+                        <!-- bold text -->
+                        <scope name="srt.bold">
+                            <starts-with>
+                                <expression>\&lt;b\&gt;</expression>
+                                <capture number="0" name="srt.bold.opening.tag" />
+                            </starts-with>
+                            <ends-with>
+                                <expression>\&lt;/b\&gt;</expression>
+                                <capture number="0" name="srt.bold.closing.tag" />
+                            </ends-with>
+                            <subscopes>
+                                <scope name="srt.text.markup.bold">
+                                    <expression>.</expression>
+                                </scope>
+                            </subscopes>
+                        </scope>
+                        
+                        <!-- underlined text -->
+                        <scope name="srt.underlined">
+                            <starts-with>
+                                <expression>\&lt;u\&gt;</expression>
+                                <capture number="0" name="srt.underlined.opening.tag" />
+                            </starts-with>
+                            <ends-with>
+                                <expression>\&lt;/u\&gt;</expression>
+                                <capture number="0" name="srt.underlined.closing.tag" />
+                            </ends-with>
+                            <subscopes>
+                                <scope name="srt.text.markup.line">
+                                    <expression>.</expression>
+                                </scope>
+                            </subscopes>
+                        </scope>
+                        
+                        <!-- position tag -->
+                        <scope name="srt.position.value.entity">
+                            <expression>\{\\an[1-9]{1}\}</expression>
+                        </scope>
+                        
+                        <!-- text styled with font tag and attribute(s)-->
+                        <scope name="srt.styled">
+                            <starts-with>
+                                <expression>\&lt;font[^\&gt;]*\&gt;</expression>
+                                <capture number="0" name="srt.font.opening.tag" />
+                            </starts-with>
+                            <ends-with>
+                                <expression>\&lt;/font\&gt;</expression>
+                                <capture number="0" name="srt.font.closing.tag" />
+                            </ends-with>
+                            <subscopes>
+                                <scope name="srt.text.markup.code">
+                                    <expression>.</expression>
+                                </scope>
+                            </subscopes>
+                        </scope>
+                    </subscopes>
                 </scope>
             </subscopes>
         </scope>
     </scopes>
-    
 </syntax>
