@@ -14,13 +14,14 @@
         <scope name="srt.subtitle.entry">
             <starts-with>
                 <!-- numeric counter identifying each sequential subtitle -->
-                <expression>(^\d+$)</expression>
-                <capture number="1" name="srt.subtitle.sequence.value.number" />
+                <expression>^\d+$</expression>
+                <capture number="0" name="srt.subtitle.sequence.value.number" />
             </starts-with>
             <ends-with>
                 <!-- blank line containing no text, indicating the end of this subtitle -->
                 <expression>^$</expression>
             </ends-with>
+            
             <subscopes anchored="true">
                 <scope name="srt.subtitle.timing">
                     <!-- time that the subtitle should appear on the screen, followed by a separator and the time it should disappear, with optional position data -->
